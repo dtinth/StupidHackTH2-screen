@@ -1,6 +1,7 @@
 <template>
   <div
     class="screen"
+    @click="clicked($event)"
   >
     <div class="aux-rotator" :class="{ 'is-active': showAux }">
       <div class="aux-transformer" :class="{ 'is-active': showAux }">
@@ -8,10 +9,9 @@
           class="logo"
           :class="{
             'show-logomark': showLogomark,
-            'show-logotype': showLogomark && showLogotype && !showAux && !curtainDown
+            'show-logotype': showLogotype
           }"
         >
-          <!-- <img class="logo-full" style="opacity: 0.5;" src="./assets/full-logo.png" /> -->
           <div class="logo-mark">
             <img class="logo-bg" style="left: 373px; top: 13px;" src="./assets/BG.png" />
             <div class="logo-mark-fg">
@@ -24,9 +24,6 @@
         </div>
       </div>
     </div>
-    <div class="curtain" :class="{ 'is-down': curtainDown }">
-      meow
-    </div>
     <div class="aux-rotator" :class="{ 'is-active': showAux }">
       <div
         class="aux-screen"
@@ -34,21 +31,36 @@
           'is-showing': showAux
         }"
       >
-        This is an auxiliary screen, useful for show some announcement stuff...
+        <slot name="screen">
+          <div class="default-screen-data" style="background: green">
+            This is an auxiliary screen, useful for show some announcement stuff...
+          </div>
+        </slot>
       </div>
     </div>
     <div
-      class="sponsors"
+      class="mini-screen"
       :class="{
-        'is-showing': showSponsors && !showAux && !curtainDown
+        'is-showing': !showAux
       }"
     >
+      <slot name="screen"></slot>
+    </div>
+    <div class="curtain" :class="{ 'is-down': curtainDown }">
+      <slot name="curtain">
+        <div class="default-screen-data">The curtain can display some stuff</div>
+      </slot>
+    </div>
+    <div class="sponsors" :class="{ 'is-showing': showSponsors }">
       <img src="./assets/sponsors/SCBAbacus.png" />
       <img src="./assets/sponsors/Sellsuki.png" />
       <img src="./assets/sponsors/ThoughtWorks.png" />
       <img src="./assets/sponsors/Nextzy.png" />
       <img src="./assets/sponsors/AppMan.png" />
       <img src="./assets/sponsors/LINK.png" />
+    </div>
+    <div class="floating" :class="{ 'is-showing': showFloating }">
+      <slot name="floating">Some floating information can be displayed.</slot>
     </div>
   </div>
 </template>
@@ -58,19 +70,33 @@ export default {
   name: 'app',
   data() {
     return {
-      curtainDown: false,
-      showLogomark: false,
-      showLogotype: false,
-      showSponsors: false,
-      showAux: false,
+      // home | curtain | screen | blank
+      currentView: 'home',
+      ready: false,
+      showFloating: false,
+    }
+  },
+  methods: {
+    clicked(e) {
+      const targetView = e.shiftKey ? (!e.ctrlKey ? 'curtain' : 'blank') : e.ctrlKey ? 'screen' : 'home'
+      if (this.currentView === targetView) {
+        this.showFloating = !this.showFloating
+      } else {
+        this.currentView = targetView
+      }
     }
   },
   created() {
     setTimeout(() => {
-      this.showLogomark = true
-      this.showLogotype = true
-      this.showSponsors = true
-    }, 640)
+      this.ready = true
+    }, 240)
+  },
+  computed: {
+    curtainDown() { return this.currentView === 'curtain' },
+    showLogomark() { return this.currentView === 'screen' || this.currentView === 'curtain' || this.currentView === 'home' },
+    showLogotype() { return this.currentView === 'home' },
+    showSponsors() { return this.currentView === 'home' },
+    showAux() { return this.currentView === 'screen' },
   },
   components: {
   }
@@ -81,7 +107,9 @@ export default {
 .screen {
   width: 1920px;
   height: 1080px;
+  position: relative;
   background: #010729;
+  overflow: hidden;
 }
 .curtain {
   background-image: linear-gradient(-90deg, #ffab47 0%, #f053d5 100%);
@@ -188,9 +216,11 @@ export default {
   height: 1080px;
   transform: translateY(0);
   transition: 0.8s transform cubic-bezier(1, 0, 0.33, 1), 0.75s opacity;
+  transition-delay: 0s;
 }
 .aux-transformer.is-active {
   transform: scale(10) translateY(261px) translateZ(0);
+  transition-delay: 0.4s;
 }
 
 .aux-screen {
@@ -199,14 +229,15 @@ export default {
   right: 0;
   bottom: 0;
   left: 0;
-  background: lime;
   opacity: 1;
   transition: 0.8s transform cubic-bezier(1, 0, 0.33, 1), 0.75s opacity;
+  transition-delay: 0.4s;
   transform: rotate(180deg);
 }
 .aux-screen:not(.is-showing) {
   transform: translateY(-261px) scale(0.1) translateZ(0) rotate(180deg);
   opacity: 0;
+  transition-delay: 0s;
 }
 
 .aux-rotator {
@@ -220,5 +251,56 @@ export default {
 }
 .aux-rotator.is-active {
   transform: rotate(180deg);
+  transition-delay: 0.4s;
+}
+
+.default-screen-data {
+  display: flex;
+  width: 1920px;
+  height: 1080px;
+  font-size: 128px;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 72px;
+  box-sizing: border-box;
+}
+
+.floating {
+  position: absolute;
+  top: 88px;
+  left: 64px;
+  padding: 48px;
+  font-size: 64px;
+  background: rgba(0, 0, 0, 0.9);
+  border: 2px solid #5f5;
+  box-shadow: 0 0 20px #5f5;
+  border-radius: 24px;
+  transition: 0.8s transform cubic-bezier(1, 0, 0.33, 1), 0.75s opacity;
+  transform: translateZ(0);
+}
+.floating:not(.is-showing) {
+  transform: translateX(1920px) rotate(90deg) translateX(50%) translateZ(0);
+}
+
+.mini-screen {
+  position: absolute;
+  width: 192px;
+  height: 108px;
+  top: 224px;
+  left: 864px;
+  color: #888;
+  font-size: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  transition: 0.3s opacity;
+  opacity: 1;
+  transition-delay: 2s;
+}
+.mini-screen:not(.is-showing) {
+  opacity: 0;
+  transition-delay: 0s;
 }
 </style>
