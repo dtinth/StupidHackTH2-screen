@@ -1,5 +1,5 @@
 body {
-  background: #000;
+  background: #010729;
   color: white;
   margin: 0;
   padding: 0;
@@ -9,4 +9,8 @@ body {
 @font-face {
   font-family: Questrial;
   src: url(./assets/Questrial-Regular.ttf);
+}
+
+a {
+  color: #ffc;
 }

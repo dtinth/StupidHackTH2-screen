@@ -10,14 +10,14 @@
           }"
         >
           <div class="logo-mark">
-            <img class="logo-bg" style="left: 373px; top: 13px;" src="./assets/BG.png" />
+            <img class="logo-bg" style="left: 373px; top: 13px;" src="../assets/BG.png" />
             <div class="logo-mark-fg">
-              <img class="logo-man" style="left: 662px; top: 151px;" src="./assets/MAN.png" />
-              <img class="logo-beam" style="left: 31px; top: 159px;" src="./assets/BEAM.png" />
+              <img class="logo-man" style="left: 662px; top: 151px;" src="../assets/MAN.png" />
+              <img class="logo-beam" style="left: 31px; top: 159px;" src="../assets/BEAM.png" />
             </div>
           </div>
-          <img class="logo-hackathon" style="left: 309px; top: 675px;" src="./assets/HACKATHON.png" />
-          <img class="logo-stupid" style="left: 463px; top: 514px;" src="./assets/STUPID.png" />
+          <img class="logo-hackathon" style="left: 309px; top: 675px;" src="../assets/HACKATHON.png" />
+          <img class="logo-stupid" style="left: 463px; top: 514px;" src="../assets/STUPID.png" />
         </div>
       </div>
     </div>
@@ -49,12 +49,12 @@
       </slot>
     </div>
     <div class="sponsors" :class="{ 'is-showing': showSponsors }">
-      <img src="./assets/sponsors/SCBAbacus.png" />
-      <img src="./assets/sponsors/Sellsuki.png" />
-      <img src="./assets/sponsors/ThoughtWorks.png" />
-      <img src="./assets/sponsors/Nextzy.png" />
-      <img src="./assets/sponsors/AppMan.png" />
-      <img src="./assets/sponsors/LINK.png" />
+      <img src="../sponsors/SCBAbacus.png" />
+      <img src="../sponsors/Sellsuki.png" />
+      <img src="../sponsors/ThoughtWorks.png" />
+      <img src="../sponsors/Nextzy.png" />
+      <img src="../sponsors/AppMan.png" />
+      <img src="../sponsors/LINK.png" />
     </div>
     <div class="floating" :class="{ 'is-showing': showFloating }">
       <slot name="floating">Some floating information can be displayed.</slot>
