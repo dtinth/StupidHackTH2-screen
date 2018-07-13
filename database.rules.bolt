@@ -1,3 +1,27 @@
-path /screens {
-  write() { true }
+path /display {
+  write() { isAdmin() }
+  read() { true }
+}
+path /categories {
+  read() { true }
+}
+path /currentProject {
+  read() { true }
+}
+path /projects {
+  read() { true }
+}
+path /votes {
+  read() { isAdmin() || isBroadcaster() }
+  path /{projectId}/{uid} {
+    read() { uid == auth.uid }
+    write() { uid == auth.uid && projectId == root.currentProject }
+  }
+}
+
+isAdmin() {
+  root.admins[auth.uid] == true
+}
+isBroadcaster() {
+  root.broadcasters[auth.uid] == true
 }

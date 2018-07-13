@@ -33,8 +33,8 @@ export default {
   mounted() {
     this.unsub = firebase.auth().onAuthStateChanged(user => {
       if (user) {
-        this.state = 'authenticated'
         this.user = user
+        this.state = 'authenticated'
       } else {
         this.state = 'unauthenticated'
       }

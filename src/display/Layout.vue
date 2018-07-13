@@ -38,7 +38,7 @@
     <div
       class="mini-screen"
       :class="{
-        'is-showing': !showAux
+        'is-showing': !showAux && showLogomark
       }"
     >
       <slot name="mini-screen"></slot>
@@ -81,8 +81,8 @@ export default {
   },
   computed: {
     curtainDown() { return this.currentView === 'curtain' },
-    showLogomark() { return this.ready && this.currentView === 'screen' || this.currentView === 'curtain' || this.currentView === 'home' },
-    showLogotype() { return this.ready && this.currentView === 'home' },
+    showLogomark() { return this.ready && (this.currentView === 'screen' || this.currentView === 'curtain' || this.currentView === 'home') },
+    showLogotype() { return this.ready && this.currentView === 'home' && !this.showFloating },
     showSponsors() { return this.ready && this.currentView === 'home' },
     showAux() { return this.currentView === 'screen' },
   }
@@ -255,7 +255,7 @@ export default {
 .floating {
   position: absolute;
   top: 88px;
-  left: 64px;
+  left: 240px;
   padding: 48px;
   font-size: 64px;
   background: rgba(0, 0, 0, 0.9);
@@ -263,7 +263,8 @@ export default {
   box-shadow: 0 0 20px #5f5;
   border-radius: 24px;
   transition: 0.8s transform cubic-bezier(1, 0, 0.33, 1), 0.75s opacity;
-  transform: translateZ(0);
+  transform: translateX(720px) translateX(-50%) translateY(720px)
+    translateY(-90%) translateZ(0);
 }
 .floating:not(.is-showing) {
   transform: translateX(1920px) rotate(90deg) translateX(50%) translateZ(0);
