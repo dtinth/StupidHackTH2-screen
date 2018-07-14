@@ -54,6 +54,7 @@
       <img src="../sponsors/ThoughtWorks.png" />
       <img src="../sponsors/Nextzy.png" />
       <img src="../sponsors/AppMan.png" />
+      <img src="../sponsors/LINE.png" />
       <img src="../sponsors/LINK.png" />
     </div>
     <div class="floating" :class="{ 'is-showing': showFloating }">
@@ -114,8 +115,8 @@ export default {
 .sponsors {
   position: absolute;
   bottom: 48px;
-  left: 64px;
-  right: 64px;
+  left: 32px;
+  right: 32px;
   display: flex;
   align-items: center;
   justify-content: space-around;
