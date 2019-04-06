@@ -56,7 +56,6 @@ export default {
 
 <style scoped>
 p {
-  padding: 1em;
   margin: 0;
 }
 p.error {
